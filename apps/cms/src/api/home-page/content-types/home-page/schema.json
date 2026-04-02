@@ -67,6 +67,17 @@
       },
       "component": "education.education-section",
       "repeatable": false
+    },
+    "contact": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "contact.contact",
+      "repeatable": false,
+      "required": true
     }
   }
 }
