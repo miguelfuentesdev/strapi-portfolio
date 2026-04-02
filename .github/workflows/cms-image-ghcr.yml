@@ -35,6 +35,9 @@ jobs:
           context: ./apps/cms
           file: ./apps/cms/Dockerfile.prod
           push: true
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
           tags: |
             ${{ env.IMAGE }}:latest
             ${{ env.IMAGE }}:${{ github.sha }}
