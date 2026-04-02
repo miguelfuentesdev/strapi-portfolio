@@ -1,0 +1,11 @@
+{
+  "name": "portfolio-devops",
+  "private": true,
+  "scripts": {
+    "dev:web": "pnpm --filter web dev",
+    "dev:cms": "pnpm --filter cms develop",
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint"
+  }
+}

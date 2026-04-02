@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_education_education_sections",
+  "info": {
+    "displayName": "EducationSection",
+    "icon": "earth"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "educations": {
+      "type": "component",
+      "component": "education.education",
+      "repeatable": true,
+      "required": true
+    },
+    "section_id": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

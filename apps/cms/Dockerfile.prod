@@ -1,0 +1,49 @@
+# ---------- deps ----------
+FROM node:22-alpine AS deps
+RUN apk add --no-cache \
+  build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips-dev git
+
+RUN corepack enable && corepack prepare pnpm@9.12.3 --activate
+
+WORKDIR /opt/app
+
+# Copiamos manifests para cache
+COPY package.json pnpm-lock.yaml* ./
+
+# Instala todas las deps (necesarias para build)
+RUN pnpm install --frozen-lockfile
+
+
+# ---------- build ----------
+FROM deps AS build
+WORKDIR /opt/app
+
+# Copiamos el resto del proyecto
+COPY . .
+
+# Build de Strapi (admin panel + build artifacts)
+RUN pnpm build
+
+# Deja solo deps de producción
+RUN pnpm prune --prod
+
+
+# ---------- runtime ----------
+FROM node:22-alpine AS runtime
+RUN apk add --no-cache vips-dev
+
+ENV NODE_ENV=production
+WORKDIR /opt/app
+
+# Copiamos la app ya buildada y con node_modules prunado
+COPY --from=build /opt/app /opt/app
+
+# Usuario no-root
+RUN addgroup -S nodegrp && adduser -S nodeusr -G nodegrp \
+  && mkdir -p /opt/app/public/uploads /opt/app/.cache /opt/app/.tmp \
+  && chown -R nodeusr:nodegrp /opt/app
+
+USER nodeusr
+
+EXPOSE 1337
+CMD ["node", "./node_modules/@strapi/strapi/bin/strapi.js", "start"]

@@ -1,0 +1,32 @@
+FROM node:22-alpine
+
+# Para sharp (libvips) y builds nativos
+RUN apk update && apk add --no-cache \
+  build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips-dev git
+
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
+
+# pnpm vía corepack
+RUN corepack enable && corepack prepare pnpm@9.12.3 --activate
+
+WORKDIR /opt/app
+
+# Copiamos manifest primero para cache
+COPY package.json pnpm-lock.yaml* ./
+
+# Instalamos deps
+RUN pnpm install --frozen-lockfile
+
+# Copiamos el resto
+COPY . .
+
+# Permisos (Strapi escribe en .cache/.tmp/public/uploads)
+RUN chown -R node:node /opt/app
+USER node
+
+# En dev puedes omitir build, pero lo dejamos equivalente al doc
+RUN pnpm build
+
+EXPOSE 1337
+CMD ["pnpm", "develop"]

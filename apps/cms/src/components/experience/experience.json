@@ -1,0 +1,47 @@
+{
+  "collectionName": "components_experience_experiences",
+  "info": {
+    "displayName": "Experience",
+    "icon": "briefcase"
+  },
+  "options": {},
+  "attributes": {
+    "job_title": {
+      "type": "string",
+      "required": true
+    },
+    "company": {
+      "type": "string",
+      "required": true
+    },
+    "company_url": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string",
+      "required": true
+    },
+    "start_date": {
+      "type": "date",
+      "required": true
+    },
+    "end_date": {
+      "type": "date"
+    },
+    "job_type": {
+      "type": "enumeration",
+      "required": true,
+      "default": "remote",
+      "enum": [
+        "in-person",
+        "hybrid",
+        "remote"
+      ]
+    },
+    "description": {
+      "type": "blocks",
+      "required": true
+    }
+  },
+  "config": {}
+}

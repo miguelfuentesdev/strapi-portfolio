@@ -1,0 +1,40 @@
+{
+  "collectionName": "components_projects_projects",
+  "info": {
+    "displayName": "Project",
+    "icon": "code"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "blocks",
+      "required": true
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "repo_url": {
+      "type": "string",
+      "required": false
+    },
+    "tech": {
+      "type": "component",
+      "component": "skills.skill-chip",
+      "repeatable": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

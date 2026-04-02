@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_education_educations",
+  "info": {
+    "displayName": "Education",
+    "icon": "earth"
+  },
+  "options": {},
+  "attributes": {
+    "education_title": {
+      "type": "string",
+      "required": true
+    },
+    "university": {
+      "type": "string",
+      "required": true
+    },
+    "start_date": {
+      "type": "date",
+      "required": true
+    },
+    "end_date": {
+      "type": "date",
+      "required": false
+    },
+    "description": {
+      "type": "blocks",
+      "required": true
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_projects_projects_sections",
+  "info": {
+    "displayName": "ProjectsSection",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "projects": {
+      "type": "component",
+      "component": "projects.project",
+      "repeatable": true,
+      "required": true
+    },
+    "section_id": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

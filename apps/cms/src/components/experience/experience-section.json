@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_experience_experience_sections",
+  "info": {
+    "displayName": "ExperienceSection",
+    "icon": "briefcase"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "experiences": {
+      "type": "component",
+      "component": "experience.experience",
+      "repeatable": true,
+      "required": true
+    },
+    "section_id": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

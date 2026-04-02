@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_skills_skills_sections",
+  "info": {
+    "displayName": "SkillsSection",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "skills": {
+      "type": "component",
+      "component": "skills.skill-chip",
+      "repeatable": true,
+      "required": true
+    },
+    "section_id": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

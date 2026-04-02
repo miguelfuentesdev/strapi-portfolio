@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_about_about_components",
+  "info": {
+    "displayName": "AboutComponent",
+    "icon": "information"
+  },
+  "options": {},
+  "attributes": {
+    "upper_title": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "blocks",
+      "required": true
+    },
+    "pfp": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "socials": {
+      "type": "component",
+      "component": "socials.social",
+      "repeatable": true,
+      "required": true
+    }
+  },
+  "config": {}
+}

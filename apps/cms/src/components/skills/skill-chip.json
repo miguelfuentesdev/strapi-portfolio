@@ -1,0 +1,39 @@
+{
+  "collectionName": "components_skills_skill_chips",
+  "info": {
+    "displayName": "SkillChip",
+    "icon": "check"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "color": {
+      "type": "enumeration",
+      "required": true,
+      "default": "blue",
+      "enum": [
+        "blue",
+        "cyan",
+        "purple",
+        "pink",
+        "orange",
+        "black",
+        "green",
+        "red",
+        "yellow"
+      ]
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  },
+  "config": {}
+}
