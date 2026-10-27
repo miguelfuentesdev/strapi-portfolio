@@ -1,16 +1,15 @@
-name: Build & Push Strapi image (GHCR + ECR)
+name: Build & Deploy Strapi to Lambda
 
 on:
   push:
     branches: ["master"]
     paths:
       - "apps/cms/**"
-      - ".github/workflows/cms-image-ghcr.yml"
+      - ".github/workflows/cms-deploy.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
-  packages: write
   id-token: write # OIDC para asumir el rol de AWS sin llaves
 
 env:
@@ -23,17 +22,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set image name
-      # GHCR requiere el path en lowercase
-        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/portfolio-cms" >> $GITHUB_ENV
-
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -70,8 +58,6 @@ jobs:
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
           tags: |
-            ${{ env.IMAGE }}:latest
-            ${{ env.IMAGE }}:${{ github.sha }}
             ${{ env.ECR_IMAGE }}:latest
             ${{ env.ECR_IMAGE }}:${{ github.sha }}
 

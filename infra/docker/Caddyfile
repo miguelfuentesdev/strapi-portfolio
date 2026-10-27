@@ -1,3 +1,0 @@
-cms-portfolio.mfuentesdev.com {
-  reverse_proxy strapi:1337
-}
