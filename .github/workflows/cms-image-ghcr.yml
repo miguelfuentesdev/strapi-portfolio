@@ -44,6 +44,14 @@ jobs:
       - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
 
+      # Pulls anónimos a public.ecr.aws (Lambda Web Adapter) chocan con el límite compartido de los runners
+      - name: Login to ECR Public
+        uses: aws-actions/amazon-ecr-login@v2
+        env:
+          AWS_REGION: us-east-1 # ECR Public solo existe en us-east-1
+        with:
+          registry-type: public
+
       - uses: docker/setup-buildx-action@v3
 
       - name: Build & push
