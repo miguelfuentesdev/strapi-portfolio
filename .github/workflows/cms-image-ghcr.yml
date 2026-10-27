@@ -66,3 +66,11 @@ jobs:
             ${{ env.IMAGE }}:${{ github.sha }}
             ${{ env.ECR_IMAGE }}:latest
             ${{ env.ECR_IMAGE }}:${{ github.sha }}
+
+      - name: Deploy to Lambda
+        run: |
+          aws lambda update-function-code \
+            --function-name strapi-portfolio \
+            --image-uri "${{ env.ECR_IMAGE }}:${{ github.sha }}" \
+            --query LastUpdateStatus --output text
+          aws lambda wait function-updated-v2 --function-name strapi-portfolio
