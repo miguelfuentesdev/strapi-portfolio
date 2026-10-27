@@ -30,18 +30,37 @@ RUN pnpm prune --prod
 
 # ---------- runtime ----------
 FROM node:22-alpine AS runtime
-RUN apk add --no-cache vips-dev
+# sharp trae su propia libvips precompilada; no hace falta vips del sistema
 
-ENV NODE_ENV=production
+# Lambda Web Adapter: solo se activa dentro de AWS Lambda.
+# En Docker/EC2 la imagen arranca igual que antes.
+COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.1 /lambda-adapter /opt/extensions/lambda-adapter
+
+ENV NODE_ENV=production \
+  # En Lambda solo /tmp es escribible
+  HOME=/tmp \
+  STRAPI_TELEMETRY_DISABLED=true \
+  STRAPI_DISABLE_UPDATE_NOTIFICATION=true \
+  AWS_LWA_PORT=1337 \
+  AWS_LWA_READINESS_CHECK_PATH=/_health \
+  # Strapi tarda más que el límite de 10 s del init de Lambda
+  AWS_LWA_ASYNC_INIT=true
+
 WORKDIR /opt/app
 
-# Copiamos la app ya buildada y con node_modules prunado
-COPY --from=build /opt/app /opt/app
-
-# Usuario no-root
-RUN addgroup -S nodegrp && adduser -S nodeusr -G nodegrp \
-  && mkdir -p /opt/app/public/uploads /opt/app/.cache /opt/app/.tmp \
-  && chown -R nodeusr:nodegrp /opt/app
+# Usuario no-root. --chown evita duplicar la app en una capa extra con chown -R
+RUN addgroup -S nodegrp && adduser -S nodeusr -G nodegrp
+# tsconfig.json le indica a Strapi que cargue la app compilada desde dist/
+COPY --from=build --chown=nodeusr:nodegrp /opt/app/package.json /opt/app/tsconfig.json /opt/app/favicon.png ./
+COPY --from=build --chown=nodeusr:nodegrp /opt/app/node_modules ./node_modules
+COPY --from=build --chown=nodeusr:nodegrp /opt/app/dist ./dist
+COPY --from=build --chown=nodeusr:nodegrp /opt/app/public ./public
+COPY --from=build --chown=nodeusr:nodegrp /opt/app/database ./database
+# Fuentes .ts: strapi start lee tsconfig.json y falla si no encuentra inputs
+COPY --from=build --chown=nodeusr:nodegrp /opt/app/src ./src
+COPY --from=build --chown=nodeusr:nodegrp /opt/app/config ./config
+COPY --from=build --chown=nodeusr:nodegrp /opt/app/types ./types
+RUN mkdir -p public/uploads .cache .tmp && chown nodeusr:nodegrp public/uploads .cache .tmp
 
 USER nodeusr
 
